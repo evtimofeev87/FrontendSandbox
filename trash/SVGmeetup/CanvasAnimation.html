@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <canvas id="canvas" width="60" height="60"></canvas>
+    <script>
+      let time = 0;
+      draw = () => {
+        let canvas = document.getElementById("canvas");
+        let context = canvas.getContext("2d");
+        let width = 60;
+        let height = 60;
+        context.fillStyle = "#3498db";
+        context.fillRect(0, 0, width, height);
+
+        context.beginPath();
+        context.strokeStyle = "rgba(255,255,255,0.2)";
+        context.lineWidth = 3;
+        context.arc(30, 30, 24, 0, 2 * Math.PI);
+        context.stroke();
+
+        context.beginPath();
+        context.strokeStyle = "white";
+        context.lineWidth = 3;
+        context.arc(30, 30, 24, 0 + time, 0.5 * Math.PI + time);
+        context.stroke();
+
+        time = time + 0.1;
+        setTimeout(draw, 13);
+      };
+
+      draw();
+    </script>
+  </body>
+</html>

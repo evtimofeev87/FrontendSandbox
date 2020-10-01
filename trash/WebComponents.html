@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ninja code</title>
+  </head>
+  <body>
+    <script>
+      class MyComponent extends HTMLElement {
+        connectedCallback() {
+          let prop = this.getAttribute("prop");
+          this.innerHTML = 
+          `<div>${prop}</div>
+          <input type="range">
+          <div>
+          <button>${prop}</button>
+          </div>`;
+        }
+      }
+      customElements.define("my-component", MyComponent);
+    </script>
+    <my-component prop="hello, world"></my-component>
+    <my-component prop="test"></my-component>
+  </body>
+</html>

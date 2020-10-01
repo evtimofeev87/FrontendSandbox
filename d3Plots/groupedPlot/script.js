@@ -24,7 +24,7 @@ let data = [
     date: '2020-02-01',
     values: [
       {
-        value: 20,
+        value: 70,
         color: '#a05d56',
       },
       {
@@ -32,7 +32,7 @@ let data = [
         color: '#d0743c',
       },
       {
-        value: 30,
+        value: 80,
         color: '#ff8c00',
       },
     ],
@@ -73,8 +73,16 @@ let data = [
   },
 ];
 
-let canvasWidth = 900;
-let canvasHeight = 500;
+let svgWidth = 960;
+let svgHeight = 500;
+
+let marginLeft = 150;
+let marginRight = 0;
+let marginTop = 20;
+let marginBottom = 20;
+
+let canvasWidth = svgWidth - marginLeft - marginRight;
+let canvasHeight = svgHeight - marginTop - marginBottom;
 
 let groupWIdth = 160;
 
@@ -117,32 +125,44 @@ let groupWIdth = 160;
 
 let svg = d3.select('svg');
 
-let canvas = svg.append('g').attr('id', 'canvas').attr('width', canvasWidth).attr('height', canvasHeight);
+let clip = svg
+  .append('clipPath')
+  .attr('id', 'clip')
+  .append('rect')
+  // .attr('x', marginLeft)
+  // .attr('y', marginTop)
+  .attr('width', canvasWidth)
+  .attr('height', canvasHeight);
+// .attr('transform', `translate(${marginLeft},${marginTop})`)
 
-yHeight = canvasHeight - 20;
+let canvas = svg
+  .append('g')
+  .attr('id', 'canvas')
+  .attr('width', canvasWidth)
+  .attr('height', canvasHeight)
+  .attr('transform', `translate(${marginLeft},${marginTop})`)
+  .attr('clip-path', 'url(#clip)');
 
 let x1Scale = d3
   .scaleTime()
   .domain([new Date('2020-01-01'), new Date('2020-04-01')])
   .nice()
-  .range([20, canvasWidth - 50]);
+  .range([0, canvasWidth])
 
-let x2Scale = d3.scaleBand().domain(keys).rangeRound([0, groupWIdth]);
+let x2Scale = d3.scaleBand().domain(keys).rangeRound([0, groupWIdth]).padding(0.3);
 
-let yScale = d3.scaleLinear().domain([0, 100]).range([yHeight, 0]);
+let yScale = d3.scaleLinear().domain([0, 100]).range([canvasHeight, 0]);
 
 let xAxis = d3.axisBottom(x1Scale).ticks(d3.timeDay.filter((d) => d.getDate() === 1));
 
-canvas
+let yAxis = d3.axisLeft(yScale);
+
+let xAxisScale = svg
   .append('g')
-  .attr('transform', 'translate(0,' + yHeight + ')')
-  .call(xAxis)
-  .append('text')
-  // .attr("y", 20)
-  // .attr("x", canvasWidth)
-  .attr('text-anchor', 'end')
-  .attr('stroke', 'black')
-  .text('Year');
+  .attr('transform', `translate(${marginLeft},${canvasHeight + marginTop})`)
+  .call(xAxis);
+
+let yAxisScale = svg.append('g').attr('transform', `translate(${marginLeft},${marginBottom})`).call(yAxis);
 
 let barGroups = canvas
   .selectAll('g.bar-group')
@@ -154,14 +174,12 @@ let barGroups = canvas
   .attr('class', 'bar-group')
 
   .attr('width', groupWIdth)
-  .attr('height', yHeight)
+  .attr('height', canvasHeight)
 
   .attr('transform', (d) => `translate(${x1Scale(new Date(d.date)) - groupWIdth / 2},0)`)
 
   .style('fill', '#0071EB')
   .style('stroke', '#0071EB')
-  // .attr("rx", 5)
-  // .attr("ry", 5)
   .attr('y', 0);
 
 let bars = barGroups
@@ -172,10 +190,13 @@ let bars = barGroups
   .attr('x', (d) => x2Scale(d.color))
   .attr('y', (d) => yScale(d.value))
   .attr('width', x2Scale.bandwidth())
-  .attr('height', (d) => yScale(0) - yScale(d.value))
-  .attr('fill', (d) => d.color);
-
-// let bar =
-// .transition()
-// .duration(800)
-// .attr("y", (d) => yScale(d.value))
+  .attr('height', (d) => yScale(0) + 10 - yScale(d.value))
+  .attr('stroke', (d) => d.color)
+  .attr('fill', (d) => d.color)
+  .attr('rx', 5)
+  .attr('ry', 5)
+  // .attr('y', yScale(0))
+  // .transition()
+  // .duration(800)
+  // .delay((d, i) => i * 200)
+  .attr('y', (d) => yScale(d.value));

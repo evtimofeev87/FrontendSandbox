@@ -1,24 +1,9 @@
-path.line {
-  fill: none;
-  stroke: steelblue;
-  stroke-width: 1.5px;
-  stroke-linejoin: round;
-  stroke-linecap: round;
+.plot-popover {
+  position: absolute;
+  background: #232a32;
+  border-radius: 4px;
+  color: white;
+  padding: 9px 16px;
+  transition: opacity .2s ease-in-out;
+  pointer-events: none;
 }
-
-.bar rect {
-  fill: steelblue;
-}
-
-.bar text {
-  fill: #fff;
-  font: 10px sans-serif;
-}
-line.goal {
-  stroke: green;
-  stroke-width: 1px;
-}
-line {
-  stroke-width: 1px;
-}
-

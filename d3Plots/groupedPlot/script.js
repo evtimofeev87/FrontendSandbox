@@ -15,7 +15,7 @@ let data = [
         color: '#d0743c',
       },
       {
-        value: 20,
+        value: 100,
         color: '#ff8c00',
       },
     ],
@@ -135,6 +135,47 @@ let clip = svg
   .attr('height', canvasHeight);
 // .attr('transform', `translate(${marginLeft},${marginTop})`)
 
+let x1Scale = d3
+  .scaleTime()
+  .domain([new Date('2020-01-01'), new Date('2020-04-01')])
+  .nice()
+  .range([0, canvasWidth]);
+
+let x2Scale = d3.scaleBand().domain(keys).rangeRound([0, groupWIdth]).paddingInner(0.3);
+
+let yScale = d3.scaleLinear().domain([0, 100]).range([canvasHeight, 0]);
+
+let xAxisGenerator = d3
+  .axisBottom(x1Scale)
+  .ticks(d3.timeDay.filter((d) => d.getDate() === 1))
+  .tickFormat((d) => `${d.getMonth().toFixed()},${d.getDate()}asfasdfasdfasdfas`);
+
+let yAxisGenerator = d3
+  .axisLeft(yScale)
+  .tickValues([0, 25, 50, 75, 100])
+  .tickFormat((d) => `${d}%`)
+  .tickSize(-canvasWidth);
+
+let xAxis = svg
+  .append('g')
+  .attr('transform', `translate(${marginLeft},${canvasHeight + marginTop})`)
+  .call(xAxisGenerator);
+
+xAxis.select('.domain').remove();
+xAxis.selectAll('g.tick > line').remove();
+xAxis
+  .selectAll('g.tick > text')
+  .attr('font-size', 14)
+  .attr('fill', '#8393A8')
+  .attr('stroke-width', '2')
+  .attr('text-anchor', 'start');
+
+let yAxis = svg.append('g').attr('transform', `translate(${marginLeft},${marginBottom})`).call(yAxisGenerator);
+
+yAxis.select('.domain').remove();
+yAxis.selectAll('g.tick > line').attr('stroke', '#C4CCD7');
+yAxis.selectAll('g.tick > text').attr('font-size', 14).attr('fill', '#8393A8').attr('stroke-width', '2');
+
 let canvas = svg
   .append('g')
   .attr('id', 'canvas')
@@ -143,41 +184,17 @@ let canvas = svg
   .attr('transform', `translate(${marginLeft},${marginTop})`)
   .attr('clip-path', 'url(#clip)');
 
-let x1Scale = d3
-  .scaleTime()
-  .domain([new Date('2020-01-01'), new Date('2020-04-01')])
-  .nice()
-  .range([0, canvasWidth])
-
-let x2Scale = d3.scaleBand().domain(keys).rangeRound([0, groupWIdth]).padding(0.3);
-
-let yScale = d3.scaleLinear().domain([0, 100]).range([canvasHeight, 0]);
-
-let xAxis = d3.axisBottom(x1Scale).ticks(d3.timeDay.filter((d) => d.getDate() === 1));
-
-let yAxis = d3.axisLeft(yScale);
-
-let xAxisScale = svg
-  .append('g')
-  .attr('transform', `translate(${marginLeft},${canvasHeight + marginTop})`)
-  .call(xAxis);
-
-let yAxisScale = svg.append('g').attr('transform', `translate(${marginLeft},${marginBottom})`).call(yAxis);
+let popover = d3.select('body').append('div').style('opacity', 0).classed('plot-popover', true);
 
 let barGroups = canvas
   .selectAll('g.bar-group')
   .data(data)
-  // .enter()
   .enter()
   .append('g')
-
   .attr('class', 'bar-group')
-
   .attr('width', groupWIdth)
   .attr('height', canvasHeight)
-
-  .attr('transform', (d) => `translate(${x1Scale(new Date(d.date)) - groupWIdth / 2},0)`)
-
+  .attr('transform', (d) => `translate(${x1Scale(new Date(d.date))},0)`)
   .style('fill', '#0071EB')
   .style('stroke', '#0071EB')
   .attr('y', 0);
@@ -200,3 +217,21 @@ let bars = barGroups
   // .duration(800)
   // .delay((d, i) => i * 200)
   .attr('y', (d) => yScale(d.value));
+
+let groupRect = barGroups
+  .append('rect')
+  // .data( d => d)
+  .attr('width', groupWIdth)
+  .attr('height', canvasHeight)
+  .attr('opacity', 0)
+  .on('mousemove', (d) => {
+    popover.transition().duration(200);
+    popover
+      .style('opacity', 1)
+      .html(d.date)
+      .style('left', d3.event.pageX + 'px')
+      .style('top', d3.event.pageY + 'px');
+  })
+  .on('mouseout', (d) => {
+    popover.style('opacity', 0);
+  });

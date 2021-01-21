@@ -1,8 +1,10 @@
-let http = require("http");
+let http = require('http');
 
 let goHome = (req, res) => {
-  res.writeHead(200);
-  res.end('Home');
+  console.log('home');
+  res.setHeader('Content-Type', 'application/json');
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.end(JSON.stringify({ name: 'John', surname: 'Doe' }));
 };
 
 let goSome = (req, res) => {
@@ -12,11 +14,13 @@ let goSome = (req, res) => {
 
 let server = http.createServer((req, res) => {
   switch (req.url) {
-    case "/":
+    case '/':
       goHome(req, res);
-    case "/some":
+      break;
+    case '/some':
       goSome(req, res);
+      break;
   }
 });
 
-server.listen(8000);
+server.listen(8001);

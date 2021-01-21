@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="block"></div>
+      <div class="block"></div>
+      <div class="block"></div>
+      <div class="block"></div>
+      <div class="block"></div>
+      <div class="block"></div>
+      <div class="block"></div>
+      <div class="block"></div>
+      <div class="block"></div>
+      <div class="block"></div>
+      <div class="block"></div>
+      <!-- <div class="scrollbar"><div class="thumb" draggable="true"></div></div> -->
+    </div>
+
+    <style>
+      body {
+        overflow-y: scroll;
+        width: 100%;
+        margin: 0;
+      }
+
+      .wrapper {
+        width: 100%;
+        margin-top: 0px;
+        overflow-x: scroll;
+        position: relative;
+      }
+
+      .wrapper::-webkit-scrollbar {
+        display: none;
+        position: fixed;
+        background-color: blue;
+        /* z-index: 1000; */
+        top: 0;
+      }
+
+      .wrapper::-webkit-scrollbar-thumb {
+        background-color: chocolate;
+      }
+
+      .block {
+        margin-bottom: 10px;
+        background: green;
+        width: 150%;
+        height: 100px;
+      }
+
+      .block:first-child {
+        background-color: red;
+        position: fixed;
+        top: 0;
+      }
+
+      .scrollbar {
+        width: 100%;
+        height: 15px;
+        background-color: lightblue;
+        position: fixed;
+        bottom: 0;
+      }
+
+      .thumb {
+        width: 50px;
+        background-color: chocolate;
+        height: 100%;
+      }
+    </style>
+  </body>
+</html>

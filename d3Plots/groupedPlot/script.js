@@ -137,7 +137,7 @@ let clip = svg
 
 let x1Scale = d3
   .scaleTime()
-  .domain([new Date('2020-01-01'), new Date('2020-04-01')])
+  .domain([new Date('2020-01-01'), new Date('2020-01-03')])
   .nice()
   .range([0, canvasWidth]);
 
@@ -147,7 +147,8 @@ let yScale = d3.scaleLinear().domain([0, 100]).range([canvasHeight, 0]);
 
 let xAxisGenerator = d3
   .axisBottom(x1Scale)
-  .ticks(d3.timeDay.filter((d) => d.getDate() === 1))
+  .ticks(d3.timeHour)
+  // .ticks(d3.timeDay.filter((d) => d.getDate() === 1))
   .tickFormat((d) => `${d.getMonth().toFixed()},${d.getDate()}asfasdfasdfasdfas`);
 
 let yAxisGenerator = d3
@@ -161,8 +162,8 @@ let xAxis = svg
   .attr('transform', `translate(${marginLeft},${canvasHeight + marginTop})`)
   .call(xAxisGenerator);
 
-xAxis.select('.domain').remove();
-xAxis.selectAll('g.tick > line').remove();
+// xAxis.select('.domain').remove();
+// xAxis.selectAll('g.tick > line').remove();
 xAxis
   .selectAll('g.tick > text')
   .attr('font-size', 14)
@@ -182,7 +183,11 @@ let canvas = svg
   .attr('width', canvasWidth)
   .attr('height', canvasHeight)
   .attr('transform', `translate(${marginLeft},${marginTop})`)
-  .attr('clip-path', 'url(#clip)');
+  .attr('clip-path', 'url(#clip)')
+        //   .append('rect')
+        // .attr('fill', '#8393A8')
+        // .attr('width', canvasWidth)
+        // .attr('height', canvasHeight)
 
 let popover = d3.select('body').append('div').style('opacity', 0).classed('plot-popover', true);
 

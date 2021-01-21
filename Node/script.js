@@ -24,3 +24,4 @@ let server = http.createServer((req, res) => {
 });
 
 server.listen(8001);
+//fetch('http://127.0.0.1:8001').then(response => response.json()).then(data =>console.log(data));

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <canvas id="canvas" width="400" height="300"></canvas>
+
+    <script>
+      let canvas = document.getElementById("canvas");
+      let ctx = canvas.getContext("2d");
+
+      let width = 400;
+      let height = 300;
+
+      let xCenter = 200;
+      let yCenter = 150;
+
+      drawAxes();
+
+      function drawAxes() {
+        ctx.beginPath();
+        ctx.moveTo(0, yCenter);
+        ctx.lineTo(width, yCenter);
+        ctx.moveTo(xCenter, 0);
+        ctx.lineTo(xCenter, height);
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = 'gray'
+        ctx.stroke();
+      }
+    </script>
+
+    <style>
+      #canvas {
+        width: 400px;
+        height: 300px;
+        margin: 20px;
+        border: 1px solid gray;
+      }
+    </style>
+  </body>
+</html>

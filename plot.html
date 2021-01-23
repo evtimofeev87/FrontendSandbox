@@ -6,15 +6,20 @@
     <title>Document</title>
   </head>
   <body>
-    <canvas id="canvas" width="400" height="400"></canvas>
+    <canvas id="canvas"></canvas>
 
     <script>
-      let canvas = document.getElementById("canvas");
-      let ctx = canvas.getContext("2d");
-      gridStep = 10;
+      let canvasWidth = 800;
+      let canvasHeight = 800;
+      let width = 10;
+      let height = 10;
 
-      let width = 200;
-      let height = 200;
+      let canvas = document.getElementById("canvas");
+      canvas.width = canvasWidth;
+      canvas.height = canvasHeight;
+
+      let ctx = canvas.getContext("2d");
+      gridStep = 1;
 
       let xCenter = width / 2;
       let yCenter = height / 2;
@@ -31,24 +36,23 @@
 
       function drawAxes() {
         ctx.beginPath();
-        ctx.moveTo(0, yCenter);
-        ctx.lineTo(width, yCenter);
-        ctx.moveTo(xCenter, 0);
-        ctx.lineTo(xCenter, height);
+        moveTo(0, yCenter);
+        lineTo(width, yCenter);
+        moveTo(xCenter, 0);
+        lineTo(xCenter, height);
         ctx.lineWidth = 2;
         ctx.strokeStyle = "gray";
         ctx.stroke();
       }
 
       function drawGrid() {
-        console.log("test");
         let x = xCenter + gridStep;
 
         //x positive
         while (x < width) {
           ctx.beginPath();
-          ctx.moveTo(x, 0);
-          ctx.lineTo(x, height);
+          moveTo(x, 0);
+          lineTo(x, height);
           ctx.lineWidth = 1;
           ctx.strokeStyle = "gray";
           ctx.stroke();
@@ -59,8 +63,8 @@
         x = xCenter - gridStep;
         while (x > 0) {
           ctx.beginPath();
-          ctx.moveTo(x, 0);
-          ctx.lineTo(x, height);
+          moveTo(x, 0);
+          lineTo(x, height);
           ctx.lineWidth = 1;
           ctx.strokeStyle = "gray";
           ctx.stroke();
@@ -72,8 +76,8 @@
         //x positive
         while (y < height) {
           ctx.beginPath();
-          ctx.moveTo(0, y);
-          ctx.lineTo(width, y);
+          moveTo(0, y);
+          lineTo(width, y);
           ctx.lineWidth = 1;
           ctx.strokeStyle = "gray";
           ctx.stroke();
@@ -84,8 +88,8 @@
         y = yCenter - gridStep;
         while (y > 0) {
           ctx.beginPath();
-          ctx.moveTo(0, y);
-          ctx.lineTo(width, y);
+          moveTo(0, y);
+          lineTo(width, y);
           ctx.lineWidth = 1;
           ctx.strokeStyle = "gray";
           ctx.stroke();
@@ -94,18 +98,44 @@
       }
 
       function drawFunction(func, color) {
-        console.log("---------------------------------------------");
         let xMin = -xCenter;
         let xMax = width - xCenter;
-        for (let x = xMin; x < xMax; x += 0.1) {
-          ctx.fillStyle = color;
+        ctx.beginPath();
+        let start = true;
+        for (let x = xMin; x < xMax; x += 0.01) {
           let y = func(x);
           if (y) {
-            ctx.fillRect(x + xCenter, yCenter - y, 2, 2);
+            if (start) {
+              moveTo(x + xCenter, yCenter - y);
+              start = false;
+            } else {
+              lineTo(x + xCenter, yCenter - y);
+            }
           }
-
-          // console.log(x + xCenter, " - ", -(func(x) + yCenter));
         }
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = color;
+        ctx.stroke();
+      }
+
+      function toCanvasX(x) {
+        return x * (canvasWidth / width);
+      }
+
+      function toCanvasY(y) {
+        return y * (canvasHeight / height);
+      }
+
+      function moveTo(x, y) {
+        ctx.moveTo(toCanvasX(x), toCanvasY(y));
+      }
+
+      function lineTo(x, y) {
+        ctx.lineTo(toCanvasX(x), toCanvasY(y));
+      }
+
+      function fillRect(x, y) {
+        ctx.fillRect(toCanvasX(x), toCanvasY(y), 2, 2);
       }
     </script>
 

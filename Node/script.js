@@ -1,5 +1,11 @@
-let http = require("http");
+const https = require("https");
+const fs = require("fs");
 let beeAuth = require("./beeAuth");
+
+const options = {
+  key: fs.readFileSync("key.pem"),
+  cert: fs.readFileSync("cert.pem"),
+};
 
 let goHome = (req, res) => {
   res.setHeader("Content-Type", "application/json");
@@ -20,7 +26,16 @@ let getBeeToken = async (req, res) => {
   res.end(JSON.stringify(data));
 };
 
-let server = http.createServer((req, res) => {
+let getRows = async (req, res) => {
+  let data = beeAuth.getRows();
+
+  res.setHeader("Content-Type", "application/json");
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Headers", "*");
+  res.end(JSON.stringify(data));
+};
+
+let server = https.createServer(options, (req, res) => {
   switch (req.url) {
     case "/":
       goHome(req, res);
@@ -31,8 +46,11 @@ let server = http.createServer((req, res) => {
     case "/get-bee-token":
       getBeeToken(req, res);
       break;
+    case "/get-rows":
+      getRows(req, res);
+      break;
   }
 });
 
 server.listen(8001);
-fetch('http://127.0.0.1:8001/get-bee-token').then(response => response.json()).then(data =>console.log(data));
+// fetch('http://127.0.0.1:8001/get-bee-token').then(response => response.json()).then(data =>console.log(data));

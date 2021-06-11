@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <p>M key</p>
+    <p></p>
+    <p></p>
+    <p></p>
+    <script>
+      document.onkeyup = function (e) {
+        if (e.which == 77) {
+          alert('M key was pressed');
+        } else if (e.ctrlKey && e.which == 66) {
+          alert('Ctrl + B shortcut combination was pressed');
+        } else if (e.ctrlKey && e.altKey && e.which == 89) {
+          alert('Ctrl + Alt + Y shortcut combination was pressed');
+        } else if (e.ctrlKey && e.altKey && e.shiftKey && e.which == 85) {
+          alert('Ctrl + Alt + Shift + U shortcut combination was pressed');
+        }
+      };
+    </script>
+  </body>
+</html>

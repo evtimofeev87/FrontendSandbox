@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <style>
+    .container {
+      display: block;
+      position: relative;
+      padding-left: 50px;
+      user-select: none;
+    }
+
+    .container input {
+      display: none;
+    }
+
+    .checkmark {
+      display: block;
+      position: absolute;
+      border: 1px solid gray;
+      width: 40px;
+      height: 20px;
+      border-radius: 10px;
+      top: 0;
+      left: 0;
+      cursor: pointer;
+      background-color: gray;
+      transition: background-color 0.3s, border-color 0.3s;
+    }
+
+    input:checked ~ .checkmark {
+      background-color: #2196f3;
+      border-color: #2196f3;
+    }
+
+    .checkmark:before {
+      content: '';
+      margin-top: 1px;
+      margin-left: 1px;
+      display: block;
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      border-radius: 9px;
+      background-color: white;
+      transition: margin 0.3s;
+    }
+
+    input:checked ~ .checkmark:before {
+      margin-left: 21px;
+    }
+  </style>
+  <body>
+    <label class="container">
+      test
+      <input type="checkbox" />
+      <span class="checkmark"></span>
+    </label>
+  </body>
+</html>

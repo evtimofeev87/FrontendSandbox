@@ -24,8 +24,13 @@ let getLayer = (input, weightsForLayer) => {
 
 let predict = (input,layersWeights) => {
     let layers = [input];
-    for(weightsForLayer of layersWeights)
-        layers.push(getLayer(input,weightsForLayer));
+    let currentInput = input;
+    for(weightsForLayer of layersWeights){
+        let newLayer = getLayer(currentInput,weightsForLayer)
+        layers.push(newLayer);
+        currentInput = newLayer;
+    }
+        
 
     return layers;
 }

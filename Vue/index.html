@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <link rel="stylesheet" href="style.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      <div>{{product}}</div>
+      <div>{{description}}</div>
+      <input type="text" :value="input" />
+      <div v-if="onSale">on Sale</div>
+      <div v-for="good in goods">{{good}}</div>
+      <div @click="increment">{{count}}</div>
+      <div :class="squareClasses"></div>
+      <div>computed {{isOnSale}}</div>
+      <person
+        v-for="(person, index) in persons"
+        :key="index"
+        :first-name="person.firstName"
+        :second-name="person.secondName"
+        :salary-amount="person.salaryAmount"
+        @delete-this-person="deletePerson"
+      ></person>
+    </div>
+    <script src="main.js"></script>
+  </body>
+</html>

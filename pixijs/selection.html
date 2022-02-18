@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<script src="https://pixijs.download/release/pixi.js"></script>
+<script>
+  renderer = new PIXI.CanvasRenderer(0, 0, opt);
+
+  // setup the mouse zooming callbacks
+  renderer.plugins.interaction.on('mousedown', function(ev) {
+    console.log(`down ${ev.data.global.x} - ${ev.data.global.y}`);                                                                                  $("#tpSelectBox").css({left:mouseDownX+canvasLeft, top:mouseDownY+canvasTop}).show();
+  });
+
+  renderer.plugins.interaction.on('mousemove', function(ev) {
+    console.log(`move ${ev.data.global.x} - ${ev.data.global.y}`);
+  });
+
+  renderer.plugins.interaction.on('mouseup', function(ev) {
+    console.log(`up ${ev.data.global.x} - ${ev.data.global.y}`);
+  });
+</script>
+</body>
+</html>

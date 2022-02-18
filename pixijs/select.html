@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script src="https://pixijs.download/release/pixi.js"></script>
+<script>
+    const app = new PIXI.Application({ antialias: true });
+    document.body.appendChild(app.view);
+
+    const graphics = new PIXI.Graphics();
+
+
+    let objects = [];
+    for(let row = 0; row<=30;row++) {
+        for(let col = 0; col <= 30; col++) {
+            startX = 40;
+            startY = 40;
+            gapX = 15;
+            gapY = 15;
+            objects.push({x: startX + col * gapX, y: startY + row * gapY});
+        }
+    }
+
+    for(let object of objects){
+        drawRect(object.x,object.y,graphics);
+    }
+
+
+
+
+    app.stage.addChild(graphics);
+
+
+
+
+
+
+
+    function drawRect(x,y,graphics) {
+        graphics.beginFill(0xDE3249);
+        graphics.drawRect(x, y, 10, 10);
+        graphics.endFill();
+    }
+</script>
+</body>
+</html>

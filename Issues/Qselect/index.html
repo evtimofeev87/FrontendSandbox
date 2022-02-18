@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/quasar@2/dist/quasar.prod.css">
+</head>
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quasar@2.5.1/dist/quasar.umd.prod.js"></script>
+    <style>
+        .options-header {
+            position: sticky;
+            top: 0;
+            z-index: 10000;
+            background-color: white;
+            border-bottom: 1px solid lightgray;
+        }
+    </style>
+    <div id="q-app" style="min-height: 100vh;">
+        <div class="q-pa-md">
+            <div class="q-gutter-md row">
+                <q-select
+                    ref="select"
+                    style="width: 400px"
+                    filled outlined dense
+                    v-model="selectedOption"
+                    label='Choose option'
+                    :virtual-scroll-sticky-size-start="73"
+                    :options="preparedOptions">
+                    <template #before-options>
+                        <div class="q-pa-md options-header">
+                            <q-input v-model="searchText" filled dense>
+                                <templat #prepend>
+                                    <q-icon name="eva-search-outline"></q-icon>
+                                </templat>
+                            </q-input>
+                        </div>
+                    </template>
+                    <template #option="scope">
+                        <template v-if="scope.opt.isParent">
+                            <q-item :clickable="false">
+                                <q-item-section style="font-weight: bold">
+                                    {{ scope.opt.label }}
+                                </q-item-section>
+                            </q-item>
+                        </template>
+                        <template v-else-if="scope.opt.isEmpty">
+                            <q-item style="min-height: 5px" :clickable="false"></q-item>
+                        </template>
+                        <template v-else>
+                            <q-item v-bind="scope.itemProps">
+                                <q-item-section>
+                                    <p class="q-ml-lg"> {{scope.opt.label}} </p>
+                                </q-item-section>
+                            </q-item>
+                        </template>
+                    </template>
+                </q-select>
+            </div>
+        </div>
+    </div>
+    <script src="options.js"></script>
+    <script src="editOptions.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
+

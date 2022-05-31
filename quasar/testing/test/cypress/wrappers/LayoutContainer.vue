@@ -1,4 +1,4 @@
-<template>
+]=<template>
   <q-layout>
     <component :is="component" v-bind="$attrs" />
   </q-layout>

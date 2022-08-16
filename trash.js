@@ -22,4 +22,4 @@ class Dog extends Animal{
 
 dog = new Dog();
 const mode = 1;
-const action = mode === 1 ? dog.run() : dog.bark();
+const action = mode === 1 ? dog.run() : dog.bark();console.log("test123")
